@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Main {
 
@@ -7,7 +8,20 @@ public class Main {
         int[] arr = {42, 75, 86, 23, 57, 68, 92, 31, 44, 10, 53, 84, 99, 36, 18, 27, 65, 12, 80, 40, 70, 91, 25, 38, 61, 47, 55, 21, 73, 59};
         //int[] arr = {10,5 ,6 ,9 ,7, 8, 2, 1, 3, 4};
 
-
+       /* int[] arr = new int[100];
+        Random random = new Random();
+        
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = random.nextInt(100); 
+        }*/
+        
+       
+        
+        System.out.println("Array desordenado é: ");
+        for (int el : arr) {
+            System.out.print(el + " ");
+        }
+         printRows();
         bucketSort(arr);
 
         System.out.println("Array ordenado é: ");
@@ -55,7 +69,7 @@ public class Main {
         // 4) Ordenar os elementos em cada balde
         for (List<Integer> bucket : buckets) {
 
-            insertionSort(bucket);
+            selectionSort(bucket);
         }
 
         printRows();
@@ -74,20 +88,27 @@ public class Main {
     }
 
 
-    private static void insertionSort(List<Integer> bucket) {
-        for (int i = 1; i < bucket.size(); i++) {
-            int key = bucket.get(i);
-            int j = i - 1;
-
-            // Mover elementos do bucket[0..i-1], que são maiores que key,
-            // para uma posição à frente de sua posição atual
-            while (j >= 0 && bucket.get(j) > key) {
-                bucket.set(j + 1, bucket.get(j));
-                j = j - 1;
+    private static void selectionSort(List<Integer> bucket) {
+    int n = bucket.size();
+    
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        
+        // Encontra o menor elemento restante
+        for (int j = i + 1; j < n; j++) {
+            if (bucket.get(j) < bucket.get(minIndex)) {
+                minIndex = j;
             }
-            bucket.set(j + 1, key);
+        }
+        
+        // Troca o menor elemento encontrado com o primeiro elemento não ordenado
+        if (minIndex != i) {
+            int temp = bucket.get(i);
+            bucket.set(i, bucket.get(minIndex));
+            bucket.set(minIndex, temp);
         }
     }
+}
 
     private static void printBuckets(List<List<Integer>> buckets, String msg) {
         //Imprimindo baldes na tela (Ordenado)
